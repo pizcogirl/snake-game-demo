@@ -25,5 +25,7 @@ public class SnakeGameDemo
     {
         myCanvas.setVisible(true);
         Snake snake = new Snake(250, 250, 10, myCanvas);
+        snake.draw();
+        snake.makeSnakeBigger();
     }
 }

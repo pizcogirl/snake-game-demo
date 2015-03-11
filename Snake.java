@@ -14,20 +14,34 @@ public class Snake
     private Color color;
     private ArrayList<Segmento> serpiente;
     private Canvas canvas;
-    
+    private Random rand;
+    private int size;
+
     /**
      * Constructor for objects of class Snake
      */
     public Snake(int xPos, int yPos, int size, Canvas can)
     {
         // initialise instance variables
-        Random rand = new Random();
+        rand = new Random();
         color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
         serpiente = new ArrayList<Segmento>();
         canvas = can;
-        drawSegment(xPos, yPos, size, color, canvas);
-        drawSegment(xPos + size, yPos, size, color, canvas);
-        drawSegment(xPos + size*2, yPos, size, color, canvas);
+        this.size = size;
+        drawSegment(xPos, yPos, 0);
+        drawSegment(xPos - size, yPos, 0);
+        drawSegment(xPos - size*2, yPos, 0);
+    }
+
+    /**
+     * Pinta los segmentos de la serpiente
+     */
+    public void draw()
+    {
+        for(int i = 0; i < serpiente.size(); i++)
+        {
+            serpiente.get(i).draw();
+        }
     }
 
     /**
@@ -37,24 +51,69 @@ public class Snake
     public boolean makeSnakeBigger()
     {
         boolean pintar = true;
-        // Compobamos lo primero si se puede dibujar. El tamaño del canvas
-        // deberia venir por parametro.
-        if((xPosition*(numSegmentos +1)*size) > canvas.getSize().getWidth())
+        // Tomamos las coordenadas del ultimo segmento y su direccion
+        int xPos = serpiente.get(serpiente.size()-1).getXPosFinal();
+        int yPos = serpiente.get(serpiente.size()-1).getYPosFinal();
+        int dir = serpiente.get(serpiente.size()-1).getDireccion();
+        // Generamos la direccion del nuevo segmento
+        int nuevaDir = dir;
+        while(nuevaDir == dir)
+        {
+            nuevaDir = rand.nextInt(4);
+        }
+        // Comprobamos si existe colision
+        if(comprobarPosiciones(xPos,yPos, nuevaDir))
         {
             pintar = false;
         }
         else
         {
-            drawSegment(xPosition + numSegmentos*size, yPosition, size);
+            drawSegment(xPos, yPos, nuevaDir);
         }
         return pintar;
     }
 
     /**
-     * Dibuja un segmento de la serpiente
+     * Metodo para comprobar las posiciones de la serpiente
+     * @return True si alguno de los segmentos colisiona con las coordenadas introducidas
      */
-    private void drawSegment(int xPos, int yPos, int siz, Color color, Canvas canvas)
+    private boolean comprobarPosiciones(int xPos, int yPos, int dir)
     {
-        segmentos.add(new Segmento(xPos, yPos, siz, color, canvas));
+        boolean colisionan = false;
+        int index = 0;
+        // Cambiamos las posiciones para que sean las finales
+        switch(dir)
+        {
+            case 0:
+            xPos += size; 
+            break;
+            case 1:
+            xPos -= size;
+            break;
+            case 2:
+            yPos -= size;
+            break;
+            case 3:
+            yPos += size;
+        }
+        // Compruebo la posicion final de mi nuevo segmento con las posiciones iniciales
+        // de todos los segmentos, si alguna coincide, chocan
+        while((index < serpiente.size()) && !(colisionan))
+        {
+            Segmento temp = serpiente.get(index);
+            if((temp.getXPos() == xPos) && (temp.getYPos() == yPos))
+            {
+                colisionan = true;
+            }
+        }
+        return colisionan;
+    }
+
+    /**
+     * Dibuja un nuevo segmento de la serpiente
+     */
+    private void drawSegment(int xPos, int yPos, int dir)
+    {
+        serpiente.add(new Segmento(xPos, yPos, size, color, canvas, dir));
     }
 }
