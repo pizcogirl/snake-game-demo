@@ -56,11 +56,7 @@ public class Snake
         int yPos = serpiente.get(serpiente.size()-1).getYPosFinal();
         int dir = serpiente.get(serpiente.size()-1).getDireccion();
         // Generamos la direccion del nuevo segmento
-        int nuevaDir = dir;
-        while(nuevaDir == dir)
-        {
-            nuevaDir = rand.nextInt(4);
-        }
+        int nuevaDir = generaDireccion(dir);
         // Comprobamos si existe colision
         if(comprobarPosiciones(xPos,yPos, nuevaDir))
         {
@@ -71,6 +67,48 @@ public class Snake
             drawSegment(xPos, yPos, nuevaDir);
         }
         return pintar;
+    }
+
+    /**
+     * Metodo para generar una nueva direccion no coincidente con la introducida
+     * @param Dir La dirección del segmento previo
+     * @return Una nueva direccion no contraria a la introducida
+     */
+    private int generaDireccion(int dir)
+    {
+        int nuevaDir = rand.nextInt(4);
+        boolean coinciden = true;
+        while(coinciden)
+        {
+            switch(dir)
+            {
+                case 0:
+                if(nuevaDir != 1)
+                {
+                    coinciden = false;
+                }
+                break;
+                case 1:
+                if(nuevaDir != 0)
+                {
+                    coinciden = false;
+                }
+                break;
+                case 2:
+                if(nuevaDir != 3)
+                {
+                    coinciden = false;
+                }
+                break;
+                case 3:
+                if(nuevaDir != 2)
+                {
+                    coinciden = false;
+                }
+            }
+            nuevaDir = rand.nextInt(4);
+        }
+        return nuevaDir;
     }
 
     /**
@@ -98,13 +136,15 @@ public class Snake
         }
         // Compruebo la posicion final de mi nuevo segmento con las posiciones iniciales
         // de todos los segmentos, si alguna coincide, chocan
-        while((index < serpiente.size()) && !(colisionan))
+        while((index < (serpiente.size() - 1)) && !(colisionan))
         {
             Segmento temp = serpiente.get(index);
-            if((temp.getXPos() == xPos) && (temp.getYPos() == yPos))
+            if(((temp.getXPos() == xPos) && (temp.getYPos() == yPos)) 
+            || ((temp.getXPosFinal() == xPos) && (temp.getYPosFinal() == yPos)))
             {
                 colisionan = true;
             }
+            index++;
         }
         return colisionan;
     }
