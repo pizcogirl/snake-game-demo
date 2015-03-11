@@ -20,21 +20,24 @@ public class Snake
     /**
      * Constructor for objects of class Snake
      */
-    public Snake(int xPos, int yPos, int size, Canvas canvas)
+    public Snake(int xPos, int yPos, int siz, Canvas canvas)
     {
         // initialise instance variables
         Random rand = new Random();
         color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
         this.xPosition = xPos;
         this.yPosition = yPos;
-        this.size = size;
+        this.size = siz;
         this.canvas = canvas;
+        drawSegment(xPosition, yPosition, size);
+        drawSegment(xPosition + size, yPosition + size, size);
+        drawSegment(xPosition + size*2, yPosition + size*2, size);
     }
 
     /**
      * Dibuja un segmento de la serpiente
      */
-    private void drawSegment(int xPosition, int yPosition, int size, Color color)
+    private void drawSegment(int xPosition, int yPosition, int size)
     {
         canvas.setForegroundColor(color);
         canvas.drawLine(xPosition, yPosition, xPosition + size, yPosition + size);

@@ -15,15 +15,15 @@ public class SnakeGameDemo
      */
     public SnakeGameDemo()
     {
-        myCanvas = new Canvas("Ball Demo", 500, 500);
+        myCanvas = new Canvas("Snake Game Demo", 500, 500);
     }
 
     /**
      * Metodo que dibuja una serpiente formada por tres segmentos
      */
-    public int drawSnake()
+    public void drawSnake()
     {
-        // put your code here
-        return x + y;
+        myCanvas.setVisible(true);
+        Snake snake = new Snake(250, 250, 10, myCanvas);
     }
 }
