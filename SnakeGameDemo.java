@@ -24,13 +24,14 @@ public class SnakeGameDemo
     public void drawSnake()
     {
         myCanvas.setVisible(true);
-        Snake snake = new Snake(250, 250, 10, myCanvas);
-        snake.makeSnakeBigger();
-        snake.makeSnakeBigger();
-        snake.makeSnakeBigger();
+        Snake snake = new Snake(350, 350, 50, myCanvas);
         snake.makeSnakeBigger();
         snake.makeSnakeBigger();
         snake.makeSnakeBigger();
         snake.draw();
+    }
+    
+    public void erase(){
+        myCanvas.erase();
     }
 }

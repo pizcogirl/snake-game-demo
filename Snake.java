@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class Snake
 {
-    private Color color;
+    // private Color color;
     private ArrayList<Segmento> serpiente;
     private Canvas canvas;
     private Random rand;
@@ -24,7 +24,7 @@ public class Snake
     {
         // initialise instance variables
         rand = new Random();
-        color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        // color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
         serpiente = new ArrayList<Segmento>();
         canvas = can;
         this.size = size;
@@ -82,26 +82,26 @@ public class Snake
         {
             switch(dir)
             {
-                case 0:
-                if(nuevaDir != 1)
+                case Segmento.IZQUIERDA:
+                if(nuevaDir != Segmento.DERECHA)
                 {
                     coinciden = false;
                 }
                 break;
-                case 1:
-                if(nuevaDir != 0)
+                case Segmento.DERECHA:
+                if(nuevaDir != Segmento.IZQUIERDA)
                 {
                     coinciden = false;
                 }
                 break;
-                case 2:
-                if(nuevaDir != 3)
+                case Segmento.ABAJO:
+                if(nuevaDir != Segmento.ARRIBA)
                 {
                     coinciden = false;
                 }
                 break;
-                case 3:
-                if(nuevaDir != 2)
+                case Segmento.ARRIBA:
+                if(nuevaDir != Segmento.ABAJO)
                 {
                     coinciden = false;
                 }
@@ -122,19 +122,19 @@ public class Snake
         // Cambiamos las posiciones para que sean las finales
         switch(dir)
         {
-            case 0:
-            xPos += size; 
+            case Segmento.IZQUIERDA:
+            xPos -= size; 
             break;
-            case 1:
-            xPos -= size;
+            case Segmento.DERECHA:
+            xPos += size;
             break;
-            case 2:
-            yPos -= size;
-            break;
-            case 3:
+            case Segmento.ABAJO:
             yPos += size;
+            break;
+            case Segmento.ARRIBA:
+            yPos -= size;
         }
-        // Compruebo la posicion final de mi nuevo segmento con las posiciones iniciales
+        // Compruebo la posicion final de mi nuevo segmento con las posiciones iniciales y finales
         // de todos los segmentos, si alguna coincide, chocan
         while((index < (serpiente.size() - 1)) && !(colisionan))
         {
@@ -154,6 +154,7 @@ public class Snake
      */
     private void drawSegment(int xPos, int yPos, int dir)
     {
+        Color color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
         serpiente.add(new Segmento(xPos, yPos, size, color, canvas, dir));
     }
 }

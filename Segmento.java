@@ -17,6 +17,13 @@ public class Segmento
     // En este guardaremos la direccion en la que va el segmento, 
     // 0 izquierda, 1 derecha, 2 abajo y 3 arriba
     private int direccion;
+    
+    public final static int IZQUIERDA = 0;
+    public final static int DERECHA = 1;
+    public final static int ABAJO = 2;
+    public final static int ARRIBA = 3;
+    
+    
 
     /**
      * Constructor for objects of class Segmento
@@ -50,17 +57,21 @@ public class Segmento
             // Dependiendo de la direccion, pintamos el segmento
             switch(direccion)
             {
-                case 0:
-                canvas.drawLine(xPosition, yPosition, xPosition + size, yPosition);
-                break;
-                case 1:
-                canvas.drawLine(xPosition, yPosition, xPosition - size, yPosition);
-                break;
-                case 2:
-                canvas.drawLine(xPosition, yPosition, xPosition, yPosition - size);
-                break;
-                case 3:
-                canvas.drawLine(xPosition, yPosition, xPosition, yPosition + size);
+                case IZQUIERDA:
+                    //canvas.drawLine(xPosition, yPosition, xPosition - size, yPosition);
+                    canvas.fillRectangle(xPosition - size, yPosition, size, 5);
+                    break;
+                case DERECHA:
+                    //canvas.drawLine(xPosition, yPosition, xPosition + size, yPosition);
+                    canvas.fillRectangle(xPosition, yPosition, size, 5);
+                    break;
+                case ABAJO:
+                    //canvas.drawLine(xPosition, yPosition, xPosition, yPosition + size);
+                    canvas.fillRectangle(xPosition, yPosition, 5, size);
+                    break;
+                case ARRIBA:
+                    //canvas.drawLine(xPosition, yPosition, xPosition, yPosition - size);
+                    canvas.fillRectangle(xPosition, yPosition-size, 5, size);
             }
         }
 
@@ -110,13 +121,13 @@ public class Segmento
     public int getXPosFinal()
     {
         int xPosFinal = xPosition;
-        if(direccion == 0)
-        {
-            xPosFinal += size;
-        }
-        else if(direccion == 1)
+        if(direccion == IZQUIERDA)
         {
             xPosFinal -= size;
+        }
+        else if(direccion == DERECHA)
+        {
+            xPosFinal += size;
         }
         return xPosFinal;
     }
@@ -128,13 +139,13 @@ public class Segmento
     public int getYPosFinal()
     {
         int yPosFinal = yPosition;
-        if(direccion == 3)
-        {
-            yPosFinal += size;
-        }
-        else if(direccion == 2)
+        if(direccion == ARRIBA)
         {
             yPosFinal -= size;
+        }
+        else if(direccion == ABAJO)
+        {
+            yPosFinal += size;
         }
         return yPosFinal;
     }
