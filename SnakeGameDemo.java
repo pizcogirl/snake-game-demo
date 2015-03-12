@@ -9,6 +9,7 @@ public class SnakeGameDemo
 {
     // 
     private Canvas myCanvas;
+    private Snake snake;
 
     /**
      * Constructor for objects of class SnakeGameDemo
@@ -16,6 +17,7 @@ public class SnakeGameDemo
     public SnakeGameDemo()
     {
         myCanvas = new Canvas("Snake Game Demo", 500, 500);
+        snake = new Snake(350, 350, 50, myCanvas);
     }
 
     /**
@@ -24,13 +26,20 @@ public class SnakeGameDemo
     public void drawSnake()
     {
         myCanvas.setVisible(true);
-        Snake snake = new Snake(350, 350, 50, myCanvas);
-        snake.makeSnakeBigger();
-        snake.makeSnakeBigger();
-        snake.makeSnakeBigger();
         snake.draw();
     }
     
+    /**
+     * Añade un segmento a la serpiente
+     */
+    public boolean makeSnakeBigger()
+    {
+        myCanvas.setVisible(true);
+        boolean dibujado = (snake.makeSnakeBigger());
+        snake.draw();
+        return dibujado;
+    }
+
     public void erase(){
         myCanvas.erase();
     }

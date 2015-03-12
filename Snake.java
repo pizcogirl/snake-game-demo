@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class Snake
 {
-    // private Color color;
+    private Color color;
     private ArrayList<Segmento> serpiente;
     private Canvas canvas;
     private Random rand;
@@ -24,7 +24,7 @@ public class Snake
     {
         // initialise instance variables
         rand = new Random();
-        // color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
         serpiente = new ArrayList<Segmento>();
         canvas = can;
         this.size = size;
@@ -56,16 +56,18 @@ public class Snake
         int yPos = serpiente.get(serpiente.size()-1).getYPosFinal();
         int dir = serpiente.get(serpiente.size()-1).getDireccion();
         // Generamos la direccion del nuevo segmento
-        int nuevaDir = generaDireccion(dir);
+        int nuevaDir = generaDireccion(dir, xPos, yPos);
         // Comprobamos si existe colision
         if(comprobarPosiciones(xPos,yPos, nuevaDir))
         {
             pintar = false;
+            drawSegment(xPos, yPos, nuevaDir);
         }
         else
         {
             drawSegment(xPos, yPos, nuevaDir);
         }
+
         return pintar;
     }
 
@@ -74,41 +76,76 @@ public class Snake
      * @param Dir La dirección del segmento previo
      * @return Una nueva direccion no contraria a la introducida
      */
-    private int generaDireccion(int dir)
+    private int generaDireccion(int dir, int xPos, int yPos)
     {
-        int nuevaDir = rand.nextInt(4);
+        int nuevaDir = 0;
         boolean coinciden = true;
+
         while(coinciden)
         {
+            nuevaDir = rand.nextInt(4);
+            // Comprobamos lo primero que no tome la direccion en la que venia el segmento,
+            // y tambien que no choque con los lados del canvas, en ese caso deberia cambiar de direccion
             switch(dir)
             {
                 case Segmento.IZQUIERDA:
                 if(nuevaDir != Segmento.DERECHA)
                 {
-                    coinciden = false;
+                    coinciden = (lados(dir, xPos, yPos));
                 }
                 break;
                 case Segmento.DERECHA:
                 if(nuevaDir != Segmento.IZQUIERDA)
                 {
-                    coinciden = false;
+                    coinciden = (lados(dir, xPos, yPos));
                 }
                 break;
                 case Segmento.ABAJO:
                 if(nuevaDir != Segmento.ARRIBA)
                 {
-                    coinciden = false;
+                    coinciden = (lados(dir, xPos, yPos));
                 }
                 break;
                 case Segmento.ARRIBA:
                 if(nuevaDir != Segmento.ABAJO)
                 {
-                    coinciden = false;
+                    coinciden = (lados(dir, xPos, yPos));
                 }
             }
-            nuevaDir = rand.nextInt(4);
+            
         }
         return nuevaDir;
+    }
+
+    /**
+     * Metodo para comprobar si choca con los lados en esa direccion
+     * @return True si no existe choque en esa direccion, false si no
+     */
+    private boolean lados(int dir, int xPos, int yPos)
+    {
+        boolean choca = false;
+        // Calculamos la posicion final
+        switch(dir)
+        {
+            case Segmento.IZQUIERDA:
+            xPos -= size; 
+            break;
+            case Segmento.DERECHA:
+            xPos += size;
+            break;
+            case Segmento.ABAJO:
+            yPos += size;
+            break;
+            case Segmento.ARRIBA:
+            yPos -= size;
+        }
+        // Comprobamos que esa posicion no sea conflictiva
+        if (xPos >= canvas.getSize().getWidth() || yPos >= canvas.getSize().getHeight()
+        || xPos <= 0 || yPos <= 0)
+        {
+            choca = true;
+        }
+        return choca;
     }
 
     /**
@@ -154,7 +191,7 @@ public class Snake
      */
     private void drawSegment(int xPos, int yPos, int dir)
     {
-        Color color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        //Color color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
         serpiente.add(new Segmento(xPos, yPos, size, color, canvas, dir));
     }
 }

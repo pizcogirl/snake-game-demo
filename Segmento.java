@@ -17,13 +17,12 @@ public class Segmento
     // En este guardaremos la direccion en la que va el segmento, 
     // 0 izquierda, 1 derecha, 2 abajo y 3 arriba
     private int direccion;
-    
+
     public final static int IZQUIERDA = 0;
     public final static int DERECHA = 1;
     public final static int ABAJO = 2;
     public final static int ARRIBA = 3;
-    
-    
+
 
     /**
      * Constructor for objects of class Segmento
@@ -41,41 +40,31 @@ public class Segmento
 
     /**
      *  Metodo para dibujar el segmento. Comprueba si toca los bordes
-     *  @return True si se puede dibujar, false si no
      */
-    public boolean draw()
+    public void draw()
     {
-        boolean pintar = true;
-        if(xPosition >= canvas.getSize().getWidth() || yPosition >= canvas.getSize().getHeight()
-        || xPosition <= 0 || yPosition <= 0)
+
+        canvas.setForegroundColor(color);
+        // Dependiendo de la direccion, pintamos el segmento
+        switch(direccion)
         {
-            pintar = false;
-        }
-        else
-        {
-            canvas.setForegroundColor(color);
-            // Dependiendo de la direccion, pintamos el segmento
-            switch(direccion)
-            {
-                case IZQUIERDA:
-                    //canvas.drawLine(xPosition, yPosition, xPosition - size, yPosition);
-                    canvas.fillRectangle(xPosition - size, yPosition, size, 5);
-                    break;
-                case DERECHA:
-                    //canvas.drawLine(xPosition, yPosition, xPosition + size, yPosition);
-                    canvas.fillRectangle(xPosition, yPosition, size, 5);
-                    break;
-                case ABAJO:
-                    //canvas.drawLine(xPosition, yPosition, xPosition, yPosition + size);
-                    canvas.fillRectangle(xPosition, yPosition, 5, size);
-                    break;
-                case ARRIBA:
-                    //canvas.drawLine(xPosition, yPosition, xPosition, yPosition - size);
-                    canvas.fillRectangle(xPosition, yPosition-size, 5, size);
-            }
+            case IZQUIERDA:
+            canvas.drawLine(xPosition, yPosition, xPosition - size, yPosition);
+            //canvas.fillRectangle(xPosition - size, yPosition, size, 5);
+            break;
+            case DERECHA:
+            canvas.drawLine(xPosition, yPosition, xPosition + size, yPosition);
+            //canvas.fillRectangle(xPosition, yPosition, size, 5);
+            break;
+            case ABAJO:
+            canvas.drawLine(xPosition, yPosition, xPosition, yPosition + size);
+            //canvas.fillRectangle(xPosition, yPosition, 5, size);
+            break;
+            case ARRIBA:
+            canvas.drawLine(xPosition, yPosition, xPosition, yPosition - size);
+            //canvas.fillRectangle(xPosition, yPosition-size, 5, size);
         }
 
-        return pintar;
     }
 
     /**
@@ -113,7 +102,7 @@ public class Segmento
     {
         return direccion;
     }
-    
+
     /**
      * Devuelve la posicion final en x del segmento
      * @return La posicion final en x del segmento
@@ -131,8 +120,8 @@ public class Segmento
         }
         return xPosFinal;
     }
-    
-        /**
+
+    /**
      * Devuelve la posicion final en y del segmento
      * @return La posicion final en y del segmento
      */
