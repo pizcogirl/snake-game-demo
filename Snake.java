@@ -15,7 +15,8 @@ public class Snake
     private ArrayList<Segmento> serpiente;
     private Canvas canvas;
     private Random rand;
-    private static final int SIZE = 10;
+    public static final int SIZE = 10;
+    private int puntuacion;
 
     /**
      * Constructor for objects of class Snake
@@ -30,6 +31,43 @@ public class Snake
         drawSegment(xPos, yPos, 0);
         drawSegment(xPos - SIZE, yPos, 0);
         drawSegment(xPos - SIZE*2, yPos, 0);
+        puntuacion = 0;
+    }
+
+    /**
+     * Metodo que devuelve el arraylist de segmentos que componen la serpiente
+     * @return El arraylist de segmentos que componen la serpiente
+     */
+    public ArrayList<Segmento> getSerpiente()
+    {
+        return serpiente;
+    }
+
+    /**
+     * Metodo que devuelve el color de la serpiente
+     * @return el color de la serpiente
+     */
+    public Color getColor()
+    {
+        return color;
+    }
+    
+    /**
+     * Metodo que devuelve la puntuacion
+     * @return La puntuacion de esta serpiente
+     */
+    public int getPuntuacion()
+    {
+        return puntuacion;
+    }
+    
+    /**
+     * Metodo que setea la puntuacion de la serpiente
+     * @param La nueva puntuacion de la serpiente
+     */
+    public void setPuntuacion(int puntos)
+    {
+        puntuacion = puntos;
     }
 
     /**
@@ -41,6 +79,10 @@ public class Snake
         {
             serpiente.get(i).draw();
         }
+        // Pinta una cabeza a la serpiente en el ultimo segmento
+        int PosX = serpiente.get(serpiente.size() -1).getXPosFinal() - 2;
+        int PosY = serpiente.get(serpiente.size() -1).getYPosFinal() - 2;
+        canvas.fillCircle(PosX, PosY, 4);
     }
 
     /**
@@ -87,8 +129,6 @@ public class Snake
      */
     public boolean move()
     {
-        // remove from canvas
-        canvas.erase();
         remove();
         boolean move = makeSnakeBigger(1);
         // draw again at new position
@@ -149,7 +189,7 @@ public class Snake
             }           
         }
         // Si no encontro direcciones validas, retornara -1
-        if(direcciones.size() == 0)
+        if(coinciden)
         {
             nuevaDir = -1;
         }
