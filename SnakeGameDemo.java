@@ -90,10 +90,15 @@ public class SnakeGameDemo
     {
         // Crea un numero de galletas aleatorias
         Random rand = new Random();
-        int numeroGalletas = rand.nextInt(50) + 30;
+        int numeroGalletas = rand.nextInt(50) + 20;
+        Galleta galleta;
         for(int i = 0; i < numeroGalletas; i++)
         {
-            galletas.add(creaGalleta());
+            galleta = creaGalleta();
+            if(galleta != null)
+            {
+                galletas.add(galleta);
+            }
         }
         // Comienza a moverse la serpiente
         boolean juega = true;
@@ -116,11 +121,16 @@ public class SnakeGameDemo
         int coordY = 0;
         boolean validas = true;
         boolean seleccionadas = false;
-        while(!seleccionadas)
+        // Comprueba si las coordenadas las tiene la serpiente u otra galleta. Usa un indice para darle
+        // una salida posible y evitar bucles infinitos si se queda sin coordenadas validas
+        int indice = 0;
+        while(!seleccionadas && indice < 10)
         {
             // Genera coordenadas para X e Y
-            coordX = rand.nextInt((int)myCanvas.getSize().getWidth() - Snake.SIZE - 1) + Snake.SIZE;
-            coordY = rand.nextInt((int)myCanvas.getSize().getHeight() - Snake.SIZE - 1) + Snake.SIZE;
+            int tempX = (int)myCanvas.getSize().getWidth() - Snake.SIZE - 1;
+            int tempY = (int)myCanvas.getSize().getHeight() - Snake.SIZE - 1;
+            coordX = rand.nextInt(tempX) + Snake.SIZE;
+            coordY = rand.nextInt(tempY) + Snake.SIZE;
             // Deben ser multiplos del size de los segmentos, para que la serpiente pueda comerlas
             coordX = coordX - (coordX%Snake.SIZE);
             coordY = coordY - (coordY%Snake.SIZE);
@@ -154,9 +164,13 @@ public class SnakeGameDemo
                     index++;
                 }
             }
+            indice++;
             seleccionadas = validas;
         }
-        galleta = new Galleta(coordX, coordY, myCanvas);
+        if(seleccionadas)
+        {
+            galleta = new Galleta(coordX, coordY, myCanvas);
+        }
         return galleta;
     }
 
@@ -197,7 +211,7 @@ public class SnakeGameDemo
     {
         myCanvas.drawString("GAME OVER",220, 240);
     }
-    
+
     public void drawPuntos()
     {
         String puntos = "Puntos: " + snake.getPuntuacion();

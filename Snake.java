@@ -15,7 +15,7 @@ public class Snake
     private ArrayList<Segmento> serpiente;
     private Canvas canvas;
     private Random rand;
-    public static final int SIZE = 10;
+    public static final int SIZE = 25;
     private int puntuacion;
 
     /**
