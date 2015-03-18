@@ -11,17 +11,21 @@ public class SnakeGameDemo
 {
     // 
     private Canvas myCanvas;
-    private Snake snake;
+    private ArrayList<Snake> snake;
     private ArrayList<Galleta> galletas;
+    private Random rand;
 
     /**
      * Constructor for objects of class SnakeGameDemo
+     * 
      */
     public SnakeGameDemo()
     {
         myCanvas = new Canvas("Snake Game Demo", 500, 500);
-        snake = new Snake(350, 350, myCanvas);
+        snake = new ArrayList<Snake>();
+        // snake = new Snake(350, 350, myCanvas);
         galletas = new ArrayList<Galleta>();
+        rand = new Random();
     }
 
     /**
@@ -29,8 +33,14 @@ public class SnakeGameDemo
      */
     public void drawSnake()
     {
-        myCanvas.setVisible(true);
-        snake.draw();
+        if(snake.size() > 0)
+        {
+            myCanvas.setVisible(true);
+            for(int i = 0; i < snake.size(); i++)
+            {
+                snake.get(i).draw();
+            }
+        }
     }
 
     /**
@@ -38,7 +48,15 @@ public class SnakeGameDemo
      */
     public boolean makeSnakeBigger()
     {
-        boolean dibujado = (snake.makeSnakeBigger(1));
+        boolean dibujado = false;
+        if(snake.size() > 0)
+        {
+            for(int i = 0; i < snake.size(); i++)
+            {
+                dibujado = snake.get(i).makeSnakeBigger(1);
+            }
+
+        }
         return dibujado;
     }
 
@@ -48,7 +66,15 @@ public class SnakeGameDemo
      */
     public boolean makeSnakeBigger(int num)
     {
-        boolean dibujado = (snake.makeSnakeBigger(num));
+        boolean dibujado = false;
+        if(snake.size() > 0)
+        {
+            for(int i = 0; i < snake.size(); i++)
+            {
+                dibujado = snake.get(i).makeSnakeBigger(num);
+            }
+
+        }
         return dibujado;
     }
 
@@ -62,35 +88,49 @@ public class SnakeGameDemo
      */
     public boolean animateSnake()
     {
-        boolean moverse = true;
-        boolean galletaComida = false;
-        while(moverse)
+        boolean moverse = false;
+        if(snake.size() > 0)
         {
-            myCanvas.wait(100);
-            // remove from canvas
-            erase();
-            moverse = snake.move();
-            galletaComida = compruebaGalletas();
-            if(galletaComida)
+            moverse = true;
+            boolean galletaComida = false;
+            while(moverse)
             {
-                snake.setPuntuacion(snake.getPuntuacion() + Galleta.PUNTOS);
-                makeSnakeBigger();
+                myCanvas.wait(100);
+                // remove from canvas
+                erase();
+                for(int i = 0; i < snake.size(); i++)
+                {
+                    moverse = snake.get(i).move();
+
+                    galletaComida = compruebaGalletas(snake.get(i));
+                    if(galletaComida)
+                    {
+                        snake.get(i).setPuntuacion(snake.get(i).getPuntuacion() + Galleta.PUNTOS);
+                        snake.get(i).makeSnakeBigger(1);
+                    }
+                }
+                // Pinta las galletas
+                pintaGalletas();
+                drawPuntos();
+
             }
-            // Pinta las galletas
-            pintaGalletas();
-            drawPuntos();
         }
         return moverse;
     }
 
     /**
      * Metodo que inicia el juego de la serpiente
+     * @param numSerpientes Numero de serpientes a añadir al juego
      */
-    public void startGame()
+    public void startGame(int numSerpientes)
     {
+        // Crea las serpientes indicadas
+        for(int i = 0; i < numSerpientes; i++)
+        {
+            snake.add(new Snake(350, 350, myCanvas));
+        }
         // Crea un numero de galletas aleatorias
-        Random rand = new Random();
-        int numeroGalletas = rand.nextInt(50) + 20;
+        int numeroGalletas = rand.nextInt(50) + (20*snake.size());
         Galleta galleta;
         for(int i = 0; i < numeroGalletas; i++)
         {
@@ -115,8 +155,7 @@ public class SnakeGameDemo
     public Galleta creaGalleta()
     {
         Galleta galleta = null;
-        // Creamos un random para generar coordenadas
-        Random rand = new Random();
+        // Genera coordenadas
         int coordX = 0;
         int coordY = 0;
         boolean validas = true;
@@ -124,7 +163,7 @@ public class SnakeGameDemo
         // Comprueba si las coordenadas las tiene la serpiente u otra galleta. Usa un indice para darle
         // una salida posible y evitar bucles infinitos si se queda sin coordenadas validas
         int indice = 0;
-        while(!seleccionadas && indice < 10)
+        while(!seleccionadas  && indice < 10)
         {
             // Genera coordenadas para X e Y
             int tempX = (int)myCanvas.getSize().getWidth() - Snake.SIZE - 1;
@@ -151,17 +190,23 @@ public class SnakeGameDemo
             index = 0;
             if(snake != null && validas)
             {
-                // Recorre cada segmento de la serpiente, y comprueba los puntos inicial y final
-                ArrayList<Segmento> serpiente = new ArrayList<Segmento>(snake.getSerpiente());
-                while(index < serpiente.size() && (validas))
+                int indiSerp = 0;
+                // Recorre todas las serpientes
+                while(indiSerp < snake.size() && (validas))
                 {
-                    Segmento segmento = serpiente.get(index);
-                    if(((segmento.getXPos() == coordX) && (segmento.getYPos() == coordY)) ||
-                    ((segmento.getXPosFinal() == coordX) && (segmento.getYPosFinal() == coordY)))
+                    // Recorre cada segmento de la serpiente, y comprueba los puntos inicial y final
+                    ArrayList<Segmento> serpiente = new ArrayList<Segmento>(snake.get(indiSerp).getSerpiente());
+                    while(index < serpiente.size() && (validas))
                     {
-                        validas = false;
+                        Segmento segmento = serpiente.get(index);
+                        if(((segmento.getXPos() == coordX) && (segmento.getYPos() == coordY)) ||
+                        ((segmento.getXPosFinal() == coordX) && (segmento.getYPosFinal() == coordY)))
+                        {
+                            validas = false;
+                        }
+                        index++;
                     }
-                    index++;
+                    indiSerp++;
                 }
             }
             indice++;
@@ -182,13 +227,17 @@ public class SnakeGameDemo
         }
     }
 
-    private boolean compruebaGalletas()
+    /**
+     * Metodo que comprueba si existe una galleta para comerse en la posicion de la serpiente
+     * @param La serpiente a comprobar
+     */
+    private boolean compruebaGalletas(Snake serp)
     {
         boolean galletaComida = false;
         if((snake != null) && (galletas.size() > 0))
         {
             // Toma el ultimo segmento de la serpiente
-            ArrayList<Segmento> serpiente = new ArrayList<Segmento>(snake.getSerpiente());
+            ArrayList<Segmento> serpiente = new ArrayList<Segmento>(serp.getSerpiente());
             Segmento segmento = serpiente.get(serpiente.size() - 1);
             int index = 0;
             // Recorremos la arraylist de galletas para ver si concide alguna coordenada
@@ -214,7 +263,14 @@ public class SnakeGameDemo
 
     public void drawPuntos()
     {
-        String puntos = "Puntos: " + snake.getPuntuacion();
-        myCanvas.drawString(puntos, 10, 20);
+        String puntos = "";
+        int posY = 20;
+        for(int i = 0; i < snake.size(); i++)
+        {
+            myCanvas.setForegroundColor(snake.get(i).getColor());
+            puntos = "Puntos: " + snake.get(i).getPuntuacion();
+            posY = 20*i;
+            myCanvas.drawString(puntos, 10, posY);
+        }
     }
 }

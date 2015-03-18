@@ -15,6 +15,9 @@ public class Snake
     private ArrayList<Segmento> serpiente;
     private Canvas canvas;
     private Random rand;
+    // El tamaño debe ir en relacion con el tamaño del canvas, de lo contrario
+    // las galletas no se generan en posiciones validas, deben ser multiplos
+    // del tamaño del canvas
     public static final int SIZE = 25;
     private int puntuacion;
 
