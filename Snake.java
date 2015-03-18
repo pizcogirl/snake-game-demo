@@ -11,14 +11,19 @@ import java.util.ArrayList;
  */
 public class Snake
 {
+    // El color para toda la serpiente
     private Color color;
+    // ArrayList de segementos que componen la serpiente
     private ArrayList<Segmento> serpiente;
+    // El canvas donde se dibuja la serpiente
     private Canvas canvas;
+    // Un random para generar coordenadas
     private Random rand;
     // El tamaño debe ir en relacion con el tamaño del canvas, de lo contrario
     // las galletas no se generan en posiciones validas, deben ser multiplos
     // del tamaño del canvas
     public static final int SIZE = 25;
+    // La puntuacion de esta serpiente
     private int puntuacion;
 
     /**
@@ -119,7 +124,7 @@ public class Snake
     }
 
     /**
-     * Elimina un segmento de la serpiente
+     * Elimina el primer segmento de la serpiente
      */
     public void remove()
     {
@@ -134,8 +139,6 @@ public class Snake
     {
         remove();
         boolean move = makeSnakeBigger(1);
-        // draw again at new position
-        draw();
         return move;
     }    
 
@@ -149,6 +152,8 @@ public class Snake
     {
         int nuevaDir = 0;
         boolean coinciden = true;
+        // ArrayList de las direcciones, para ir eliminando las no validas
+        // si no quedan, no se podra mover
         ArrayList<Integer> direcciones = new ArrayList<>();
         direcciones.add(new Integer(Segmento.IZQUIERDA));
         direcciones.add(new Integer(Segmento.DERECHA));

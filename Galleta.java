@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.util.Random;
 
 /**
  * Write a description of class Galleta here.
@@ -12,21 +14,23 @@ public class Galleta
     // Posicion de inicio en Y
     private int posY;
     // Valor en puntos de la galleta
-    public final static int PUNTOS = 5;
+    private int puntos;
     // El canvas donde se va a dibujar
     private Canvas canvas;
     // Tamaño de la galleta
-    public final static int LADO = 5;
+    private int lado;
 
     /**
      * Constructor for objects of class Galleta
      */
-    public Galleta(int posX, int posY, Canvas canvas)
+    public Galleta(int posX, int posY, int lado, Canvas canvas)
     {
        // Inicializa la posicion de la galleta y el canvas
        this.posX = posX;
        this.posY = posY;
        this.canvas = canvas;
+       this.lado = lado;
+       this.puntos = lado;
     }
 
     /**
@@ -34,7 +38,8 @@ public class Galleta
      */
     public void drawGalleta()
     {
-        canvas.fillRectangle(posX-LADO/2, posY-LADO/2, LADO, LADO);
+        canvas.setForegroundColor(Color.BLACK);
+        canvas.fillRectangle(posX-lado/2, posY-lado/2, lado, lado);
     }
     
     /**
@@ -53,6 +58,24 @@ public class Galleta
     public int getYPos()
     {
         return posY;
+    }
+    
+    /**
+     * Metodo que devuelve el lado de la galleta
+     * @return El tamaño del lado de la galleta
+     */
+    public int getLado()
+    {
+        return lado;
+    }
+    
+    /**
+     * Metodo que devuelve los puntos obtenidos por comer esta gallera
+     * @return Los puntos que vale esta galleta
+     */
+    public int getPuntos()
+    {
+        return puntos;
     }
     
 }
