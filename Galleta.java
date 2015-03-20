@@ -2,10 +2,10 @@ import java.awt.Color;
 import java.util.Random;
 
 /**
- * Write a description of class Galleta here.
+ * Representa las galletas que puede comerse la serpiente para ganar puntos
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Julia Zuara 
+ * @version 1.0
  */
 public class Galleta
 {
@@ -22,6 +22,10 @@ public class Galleta
 
     /**
      * Constructor for objects of class Galleta
+     * @param posX Coordenada en X de la galleta
+     * @param posY Coordenada en Y de la galleta
+     * @param lado Lado de la galleta
+     * @param canvas Canvas donde dibuja las galletas
      */
     public Galleta(int posX, int posY, int lado, Canvas canvas)
     {
@@ -38,8 +42,8 @@ public class Galleta
      */
     public void drawGalleta()
     {
-        canvas.setForegroundColor(Color.BLACK);
-        canvas.fillRectangle(posX-lado/2, posY-lado/2, lado, lado);
+        canvas.setForegroundColor(Color.ORANGE);
+        canvas.fillCircle(posX-lado/2, posY-lado/2, lado);
     }
     
     /**
@@ -64,7 +68,7 @@ public class Galleta
      * Metodo que devuelve el lado de la galleta
      * @return El tamaño del lado de la galleta
      */
-    public int getLado()
+    public int getlado()
     {
         return lado;
     }

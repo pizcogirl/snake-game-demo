@@ -4,10 +4,10 @@ import java.util.Random;
 import java.util.ArrayList;
 
 /**
- * Write a description of class Snake here.
+ * Representa una serpiente para el juego Snake
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Julia Zuara
+ * @version 1.0
  */
 public class Snake
 {
@@ -28,17 +28,18 @@ public class Snake
 
     /**
      * Constructor for objects of class Snake
+     * @param xPos Coordenadas en x para iniciar la serpiente
+     * @param yPos Coordenadas en y para iniciar la serpiente
+     * @param can Canvas donde va a dibujarse la serpiente
      */
     public Snake(int xPos, int yPos, Canvas can)
     {
         // initialise instance variables
         rand = new Random();
         color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-        serpiente = new ArrayList<Segmento>();
         canvas = can;
-        drawSegment(xPos, yPos, 0);
-        drawSegment(xPos - SIZE, yPos, 0);
-        drawSegment(xPos - SIZE*2, yPos, 0);
+        serpiente = new ArrayList<Segmento>();
+        createSegment(xPos, yPos, 0);
         puntuacion = 0;
     }
 
@@ -59,7 +60,7 @@ public class Snake
     {
         return color;
     }
-    
+
     /**
      * Metodo que devuelve la puntuacion
      * @return La puntuacion de esta serpiente
@@ -68,10 +69,10 @@ public class Snake
     {
         return puntuacion;
     }
-    
+
     /**
      * Metodo que setea la puntuacion de la serpiente
-     * @param La nueva puntuacion de la serpiente
+     * @param puntos La nueva puntuacion de la serpiente
      */
     public void setPuntuacion(int puntos)
     {
@@ -79,7 +80,7 @@ public class Snake
     }
 
     /**
-     * Pinta los segmentos de la serpiente
+     * Pinta los segmentos de la serpiente y una cabecita
      */
     public void draw()
     {
@@ -113,7 +114,7 @@ public class Snake
             // Comprobamos el valor de la direccion del nuevo segmento, si es valido lo dibuja
             if (nuevaDir != -1)
             {
-                drawSegment(xPos, yPos, nuevaDir);
+                createSegment(xPos, yPos, nuevaDir);
             } else
             {
                 pintar = false;
@@ -144,7 +145,9 @@ public class Snake
 
     /**
      * Metodo para generar una nueva direccion no coincidente con la introducida
-     * @param Dir La dirección del segmento previo
+     * @param dir La dirección del segmento previo
+     * @param xPos La coordenada en x donde se iniciaria el nuevo segmento
+     * @param yPos La coordenada en y donde se iniciaria el nuevo segmento
      * @return Una nueva direccion no contraria a la introducida, -1 si no quedan
      * direcciones validas
      */
@@ -206,6 +209,9 @@ public class Snake
 
     /**
      * Metodo para comprobar si choca con los lados o consigo misma en esa direccion
+     * @param dir La dirección del segmento previo
+     * @param xPos La coordenada en x donde se iniciaria el nuevo segmento
+     * @param yPos La coordenada en y donde se iniciaria el nuevo segmento
      * @return True si no existe choque en esa direccion, false si no
      */
     private boolean colisiona(int dir, int xPos, int yPos)
@@ -253,8 +259,11 @@ public class Snake
 
     /**
      * Dibuja un nuevo segmento de la serpiente
+     * @param xPos La coordenada en x donde se inicia el segmento
+     * @param yPos La coordenada en y donde se inicia el segmento
+     * @param dir La direccion en la que se debe pintar el segmento
      */
-    private void drawSegment(int xPos, int yPos, int dir)
+    private void createSegment(int xPos, int yPos, int dir)
     {
         //Color color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
         serpiente.add(new Segmento(xPos, yPos, SIZE, color, canvas, dir));

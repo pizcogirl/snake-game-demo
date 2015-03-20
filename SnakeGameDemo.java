@@ -3,10 +3,10 @@ import java.util.Random;
 import java.awt.Color;
 
 /**
- * Write a description of class SnakeGameDemo here.
+ * Representa una demo del juego de las serpientes
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Julia Zuara
+ * @version 1.0
  */
 public class SnakeGameDemo
 {
@@ -68,6 +68,7 @@ public class SnakeGameDemo
     /**
      * Añade varios segmentos a la serpiente
      * @param num Numero de segmentos a añadir a la serpiente
+     * @return true si puede crecer, false si no
      */
     public boolean makeSnakeBigger(int num)
     {
@@ -136,10 +137,20 @@ public class SnakeGameDemo
      */
     public void startGame(int numSerpientes)
     {
+        // Genera las coordenadas para la serpiente, seran siempre coordenadas validas
+        int tempX = (int)myCanvas.getSize().getWidth() - Snake.SIZE*2 - 1;
+        int tempY = (int)myCanvas.getSize().getHeight() - Snake.SIZE*2 - 1;
+        int coordX = rand.nextInt(tempX) + Snake.SIZE*2;
+        int coordY = rand.nextInt(tempY) + Snake.SIZE*2;
+        // Deben ser multiplos del size de los segmentos
+        coordX = coordX - (coordX%Snake.SIZE);
+        coordY = coordY - (coordY%Snake.SIZE);
         // Crea las serpientes indicadas
         for(int i = 0; i < numSerpientes; i++)
         {
-            snake.add(new Snake(350, 350, myCanvas));
+            Snake newSnake = new Snake(coordX, coordY, myCanvas);
+            newSnake.makeSnakeBigger(2);
+            snake.add(newSnake);
         }
         // Crea un numero de galletas aleatorias
         int numeroGalletas = rand.nextInt(80) + (10*snake.size());
@@ -163,6 +174,7 @@ public class SnakeGameDemo
 
     /**
      * Metodo que crea una galleta de forma aleatoria, en posiciones validas
+     * @return La galleta creada si puede crearla, devolvera una galleta null si no
      */
     public Galleta creaGalleta()
     {
@@ -170,14 +182,15 @@ public class SnakeGameDemo
         // Genera coordenadas
         int coordX = 0;
         int coordY = 0;
-        int lado = 0;
+        int lado;
         boolean validas = true;
         boolean seleccionadas = false;
         // Comprueba si las coordenadas las tiene la serpiente u otra galleta. Usa un indice para darle
         // una salida posible y evitar bucles infinitos si se queda sin coordenadas validas
         int indice = 0;
-        while(!seleccionadas  && indice < 10)
+        while(!seleccionadas && indice < 10)
         {
+            validas = true;
             // Genera coordenadas para X e Y
             int tempX = (int)myCanvas.getSize().getWidth() - Snake.SIZE - 1;
             int tempY = (int)myCanvas.getSize().getHeight() - Snake.SIZE - 1;
@@ -232,7 +245,7 @@ public class SnakeGameDemo
         }
         return galleta;
     }
-    
+
     /**
      * Metodo que pinta las galletas por pantalla
      */
@@ -274,7 +287,7 @@ public class SnakeGameDemo
         }
         return galletaComida;
     }
-    
+
     /**
      * Muestra el mensaje de game over
      */
@@ -286,7 +299,7 @@ public class SnakeGameDemo
         int posY = (int)(myCanvas.getSize().getHeight())/2 - 10;
         myCanvas.drawString("GAME OVER",posX, posY);
     }
-    
+
     /**
      * Muestra los puntos de las serpientes
      */
@@ -304,7 +317,7 @@ public class SnakeGameDemo
             myCanvas.drawString(puntos, 10, posY);
         }
     }
-    
+
     /**
      * Reinicia el snakeGameDemo para poder volver a jugar
      */

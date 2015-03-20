@@ -2,17 +2,22 @@ import java.awt.*;
 import java.awt.geom.*;
 
 /**
- * Write a description of class Segmento here.
+ * Representa los segmentos que componen las serpientes
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Julia Zuara
+ * @version 1.0
  */
 public class Segmento
 {
+    // Color del segmento
     private Color color;
+    // Posicion inicial en x
     private int xPosition;
+    // Posicion iniciar en y
     private int yPosition;
+    // Tamaño del segmento
     private int size;
+    // Canvas para dibujarse
     private Canvas canvas;
     // En este guardaremos la direccion en la que va el segmento, 
     // 0 izquierda, 1 derecha, 2 abajo y 3 arriba
@@ -26,6 +31,12 @@ public class Segmento
 
     /**
      * Constructor for objects of class Segmento
+     * @param xPos Posicion inicial en x del segmento
+     * @param yPos Posicion inicial en y del segmento
+     * @param siz Tamaño del segmento
+     * @param color Color del segmento
+     * @param canvas Canvas donde va a dibujarse el segmento
+     * @param dir Direccion en la que va a dibujarse el segmento
      */
     public Segmento(int xPos, int yPos, int siz, Color color, Canvas canvas, int dir)
     {
@@ -39,11 +50,10 @@ public class Segmento
     }
 
     /**
-     *  Metodo para dibujar el segmento. Comprueba si toca los bordes
+     *  Metodo para dibujar el segmento
      */
     public void draw()
     {
-
         canvas.setForegroundColor(color);
         // Dependiendo de la direccion, pintamos el segmento
         switch(direccion)
